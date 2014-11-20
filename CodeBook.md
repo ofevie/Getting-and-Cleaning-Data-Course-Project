@@ -200,12 +200,12 @@ Variables of **tidydata.txt**.
 - Description: physical activity realized by the volunteers. 
 - Type: factor, 6 levels.
 
-      1. "laying"
-      2. "sitting"
-      3. "standing"
-      4. "walking"
-      5. "walking_downstairs"
-      6. "walking_upstairs"
+1. "laying"
+2. "sitting"
+3. "standing"
+4. "walking"
+5. "walking_downstairs"
+6. "walking_upstairs"
 
 
 **subject**
@@ -213,9 +213,9 @@ Variables of **tidydata.txt**.
 - Description: identification code for each volunteer.
 - Type: factor, 30 levels, ordered numerically from 1 to 30.
 
-      1. "1"
-      2. "2"
-      3. "3" ...
+1. "1"
+2. "2"
+3. "3" ...
       
 
 **observationDomain**
@@ -223,8 +223,8 @@ Variables of **tidydata.txt**.
 - Description: indicates if the measured variables are in the time  domain or in the frequency domain. The frequency domain variables were obtained using a Fast-Fourier-Transform on the time domain variables.
 - Type: factor, 2 levels.
 
-      1. "time"
-      2. "frequency"
+1. "time"
+2. "frequency"
 
 
 **component**
@@ -232,10 +232,10 @@ Variables of **tidydata.txt**.
 - Description: indicates the vectorial axis component or the Magnitude of the measured variables.
 - Type: factor, 4 levels.
 
-      1. "X"
-      2. "Y"
-      3. "Z"
-      4. "Magnitude"
+1. "X"
+2. "Y"
+3. "Z"
+4. "Magnitude"
 
 
 **averagedStatisticalValue**
