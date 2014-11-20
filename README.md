@@ -1,3 +1,90 @@
+# README
+Ofelia  
+## Project Description
+
+
+This file, together with CodeBook.md and run_analysis.R are the result of a Course Project assignment for the course "Getting and Cleaning Data" of the Data Science Specialization in Coursera. The purpose of this project is to demonstrate my ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis.
+
+The work is peer-reviewed.
+
+This document is part of a set of documents:
+
+* CodeBook.md
+* README.md
+* run_analysis.R
+* tidydata.txt
+
+## Origin of the data
+
+The idea of the assignment is that we download data from <https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip>. More information about the data and its original project can be obtained from: <http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones>.  
+The downloaded data is in a somewhat messy form. The goal of the project is to understand what the data is about, work with it, filter the results we are interested in, and finally create a tidy dataset from the messy data.  
+The guidelines for 'what is tidy data' are taken from the publication 'Tidy data' by Hadley Wickham (<http://vita.had.co.nz/papers/tidy-data.pdf>).
+
+A detailed description on the downloaded files and data is present in CodeBook.md.
+
+## The *run_analysis.R* script
+
+### Introduction
+
+"Happy families are all alike; every  
+unhappy family is unhappy in its own  
+way"  
+Leo Tolstoy
+
+I decided to imitate Mr. Hadley Wickham and also add this little phrase. Also, in Wickham's words:  
+
+"Like families, tidy datasets are all alike but every messy dataset is messy in its own way."  
+
+What does this imply?  
+This means that the content of this project is not easily transferable to another project. As each messy data is messy in its own way, each different type of messy data needs to be tackled differently. However, there are some "lessons learned" from the project:
+
+- using the reshape2 package for melting and casting;
+- using a variable name convention that allows easier understanding of the data;
+- using the plyr and tidyr packages to arrange and tidy the data to its final form.
+
+### Assumptions
+
+R version 3.1.1 (2014-07-10) "Sock it to Me" on platform x86_64-apple-darwin13.1.0.
+
+#### About the data files
+
+*run_analysis.R* assumes that the data was downloaded and the files are in the current working directory of R. For a more detailed explanation of which files were used, please look at the CodeBook.md file.
+
+#### About the R packages
+I use a number of packages outside the standard installation:
+
+- reshape2
+- plyr
+- tidyr
+
+These packages must be installed before running the script.
+
+### Output
+
+The output of *run_analysis.R* is tidy data as a space-separated table in text format called "tidydata.txt". The tidy data consists of 10 columns and 2880 observations. Some NA values were introduced.  
+The program will write the tidy data to the current working directory.
+To see the tidy data, please run:
+
+```
+tdata <- read.table("./tidydata.txt", header = TRUE)
+View(tdata)
+```
+
+### The project instructions
+
+"You should create one R script called run_analysis.R that does the following.
+
+1. Merges the training and the test sets to create one data set.
+2. Extracts only the measurements on the mean and standard deviation for each measurement.
+3. Uses descriptive activity names to name the activities in the data set.
+4. Appropriately labels the data set with descriptive variable names.
+5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject."
+
+### The script code
+
+As there is a very detailed explanation of the work in CodeBook.md, here I limit myself to just put the code in its 'raw form'.
+
+```
 ## Instructions
 ## You should create one R script called run_analysis.R that does the 
 ## following:
@@ -210,3 +297,6 @@ write.table(tidydata,file = "./tidydata.txt", row.names = FALSE)
 # to see this dataset later, use:
 # tdata <- read.table("./tidydata.txt", header = TRUE)
 # View(tdata)
+
+```
+

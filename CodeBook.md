@@ -1,5 +1,5 @@
 # Code Book
-M. Ofelia Vieitez  
+Ofelia  
 ### Introduction
 
 This file, together with README.md and run_analysis.R are the result of a Course Project assignment for the course "Getting and Cleaning Data" of the Data Science Specialization in Coursera. The purpose of this project is to demonstrate my ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis.
