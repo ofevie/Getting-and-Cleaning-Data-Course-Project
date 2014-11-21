@@ -341,8 +341,8 @@ tidydata <- meandata %>%
 #### Disgression about tidy data
 
 As it is mentioned in the thread of this subject ['Tidy data and the assignment'](https://class.coursera.org/getdata-009/forum/thread?thread_id=192), the form of the tidy data will depend greatly on the use we want of the data.  
-My approach was from the angle of physics (my subject area) and mostly with the idea of easier subsetting, as I don't know the application of the data. As a physisist, I personally would like to separate time domain observations from frequency domain ones (they are related, but have very different applications), as well as vectorial components (x-, y-, z- directions) from the magnitude of the vector (a scalar). And of course the mean and standard deviation are totally different quantities.
-I could have continued the separation: accelerometer vs. gyroscope, non-jerk vs. jerk signals. As only 5 columns/variables remain, my thought was that if I wanted to subset those columns only, I would just type the names of the variables.
+My approach was from the angle of physics (my subject area) and mostly with the idea of easier subsetting, as I don't know the application of the data. As a physicist, I personally would like to separate time domain observations from frequency domain ones (they are related, but have very different applications), as well as vectorial components (x-, y-, z- directions) from the magnitude of the vector (a scalar). And of course the mean and standard deviation are totally different quantities.
+I could have continued the separation: accelerometer vs. gyroscope, non-jerk vs. jerk signals. As only 5 observation variables remain, my thought was that if I wanted to subset those columns only, I would just type the names of the variables.
 
 #### NA values
 
@@ -560,7 +560,7 @@ tidydata$component <- factor(tidydata$component,
 tidydata$averagedStatisticalValue <- factor(tidydata$averagedStatisticalValue,
                                             levels = c("mean","std"))
 # final result:
-tidydata <- plyr::arrange(tidydata,activity,subject,observationDomain,
+tidydata <- plyr::arrange(tidydata,observationDomain,activity,subject,
                           component,averagedStatisticalValue)
 
 # For consistency in the naming:

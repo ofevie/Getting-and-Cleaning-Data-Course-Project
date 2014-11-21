@@ -92,7 +92,6 @@ rm(cond1,cond2,cond)
 # I personally don't like the uppercases
 
 activity_labels$V2 <- tolower(activity_labels$V2)
-
 for (i in 1:6L) {
       activity$V1[activity$V1 == activity_labels$V1[i]] <- activity_labels$V2[i]
 }
@@ -128,7 +127,6 @@ namecols <- sub("Acc","LinearAcceleration",namecols, fixed = TRUE)
 namecols <- sub("Gyro","AngularVelocity",namecols, fixed = TRUE)
 namecols <- sub("^t","time_",namecols)
 namecols <- sub("^f","frequency_",namecols)
-
 
 names(data) <- namecols
 rm(namecols, temp)
@@ -194,7 +192,7 @@ tidydata$component <- factor(tidydata$component,
 tidydata$averagedStatisticalValue <- factor(tidydata$averagedStatisticalValue,
                                             levels = c("mean","std"))
 # final result:
-tidydata <- plyr::arrange(tidydata,activity,subject,observationDomain,
+tidydata <- plyr::arrange(tidydata,observationDomain,activity,subject,
                           component,averagedStatisticalValue)
 
 # For consistency in the naming:
