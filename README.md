@@ -43,8 +43,8 @@ Inside both _test_ and _train_ there are a number of files (only for the _test_ 
 
 Similar files, but now with the suffix 'train' can be found in the _train_ directory.
 
-In this project, the files contained in the _Inertial Signals_ directories are not going to be used, as explained in
-<https://class.coursera.org/getdata-009/forum/thread?thread_id=58>, 'Do we need the inertial folder'. These folders contain the raw data used to obtain the results in X\_train.txt and X\_test.txt and they are of no interest for this particular project.
+In this project, the files contained in the _Inertial Signals_ directories are not going to be used, as explained in 
+<https://class.coursera.org/getdata-009/forum/thread?thread_id=58#post-177>, under 'Do we need the inertial folder'. These folders contain the raw data used to obtain the results in X\_train.txt and X\_test.txt and they are of no interest for this particular project.
 
 ### The details about the data
 
@@ -211,12 +211,12 @@ The implemented name changes were as follows:
 - "Mag" was substituted by "_Magnitude" in the appropriate variables.
 - "Acc" was substituted by "LinearAcceleration" in the appropriate variables.
 - "Gyro" was substituted by "AngularVelocity" in the appropriate variables.
-- "t" was substituted by "time_" in the appropriate variables.
-- "f" was substituted by "frequency_" in the appropriate variables.
+- "t" was substituted by "time" in the appropriate variables.
+- "f" was substituted by "frequency" in the appropriate variables.
 - For the variables containing "-mean()" a suffix "_mean" was added to the variable name, and the "-mean()" was removed.
 - For the variables containing "-std()" a suffix "_std" was added to the variable name, and the "-std()" was removed.
 
-Then, the original variable "tBodyAcc-mean()-X" transforms into "time\_BodyLinearAcceleration\_X\_mean".
+Then, the original variable "tBodyAcc-mean()-X" transforms into "timeBodyLinearAcceleration\_X\_mean".
 
 The variable names became very long (but much clearer) with this format.
 
@@ -238,13 +238,13 @@ namecols <- sub("Mag","_Magnitude",namecols, fixed = TRUE)
 
 namecols <- sub("Acc","LinearAcceleration",namecols, fixed = TRUE)
 namecols <- sub("Gyro","AngularVelocity",namecols, fixed = TRUE)
-namecols <- sub("^t","time_",namecols)
-namecols <- sub("^f","frequency_",namecols)
+namecols <- sub("^t","time",namecols)
+namecols <- sub("^f","frequency",namecols)
 
 names(data) <- namecols
 ```
 
-#### The complete (messy) data
+#### The complete (but messy) data
 
 Finally, the activities and subject are added to the data. The data is then ordered by activity and subject.
 
@@ -289,10 +289,10 @@ Characteristics of a tidy dataset:
 (The original data clearly violated the 3rd characteristic: we needed to use several files to construct a complete dataset/observational unit.)
 
 In the case of *meandata* the key part is to answer: **'what is a variable?'**.
-As I see it, the variables are only 10:
+As I see it, the variables are only 13:
 
-- 5 fixed variables
-- 5 observational variables
+- 4 fixed variables
+- 9 observational or measured variables
 
 Fixed variables describe the experimental design and are known in advance.
 They somewhat parameterize the results displayed on the measured variables.
@@ -303,36 +303,38 @@ The fixed variables are:
 
 1. activity
 2. subject
-3. **observationDomain** - time or frequency
-4. **component** - X,Y,Z vector component or Magnitude
-5. **averagedStatisticalValue** - mean or std
+3. **component** - X,Y,Z vector component or Magnitude
+4. **averagedStatisticalValue** - mean or std
 
-The 5 **measured variables** are:
+The 9 **measured variables** are:
 
 Measured with the Gyroscope:
 
-6. BodyAngularVelocity
-7. BodyAngularVelocityJerk (time derivative of BodyAngularVelocity)
+5. timeBodyAngularVelocity
+6. timeBodyAngularVelocityJerk (time derivative of BodyAngularVelocity)
+7. frequencyBodyAngularVelocity
+8. frequencyBodyAngularVelocityJerk 
 
 Measured with the Accelerometer:
 
-8. BodyLinearAcceleration
-9. BodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
-10. GravityLinearAcceleration
+9. timeBodyLinearAcceleration
+10. timeBodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
+11. timeGravityLinearAcceleration
+12. frequencyBodyLinearAcceleration
+13. frequencyBodyLinearAccelerationJerk
 
 The way the variables were named in the step 4 comes into play.
 All variable names follow this convention:
 
-- observationDomain\_MeasuredVariable\_component\_averagedStatisticalValue
+- MeasuredVariable\_component\_averagedStatisticalValue
 
 Using this fact, it is relatively easy to use the tidyr package tooling to gather, separate and spread *meandata* to obtain *tidydata*.
 
-*tidydata* has 2880 observations of 10 variables.
+*tidydata* has 1440 observations of 13 variables.
 
 
 ```
-colnames <- c("observationDomain","var","component",
-              "averagedStatisticalValue")
+colnames <- c("var","component","averagedStatisticalValue")
 tidydata <- meandata %>%
       tidyr::gather(unit_var_comp_stat, val,-one_of("activity","subject")) %>%
       tidyr::separate(unit_var_comp_stat,colnames,sep = "_") %>%
@@ -341,16 +343,17 @@ tidydata <- meandata %>%
 #### Disgression about tidy data
 
 As it is mentioned in the thread of this subject ['Tidy data and the assignment'](https://class.coursera.org/getdata-009/forum/thread?thread_id=192), the form of the tidy data will depend greatly on the use we want of the data.  
-My approach was from the angle of physics (my subject area) and mostly with the idea of easier subsetting, as I don't know the application of the data. As a physicist, I personally would like to separate time domain observations from frequency domain ones (they are related, but have very different applications), as well as vectorial components (x-, y-, z- directions) from the magnitude of the vector (a scalar). And of course the mean and standard deviation are totally different quantities.
-I could have continued the separation: accelerometer vs. gyroscope, non-jerk vs. jerk signals. As only 5 observation variables remain, my thought was that if I wanted to subset those columns only, I would just type the names of the variables.
+My approach was from the angle of physics (my subject area) and mostly with the idea of easier subsetting, as I don't know the application of the data. As a physicist, I personally would like to easily subset vectorial components (x-, y-, z- directions) from the magnitude of the vector (a scalar). And of course the mean and standard deviation are totally different quantities.
+I could have continued the separation: time vs. frequency, accelerometer vs. gyroscope, non-jerk vs. jerk signals. As only 9 observation variables remain, my thought was that if I wanted to subset those columns only, I would just type the names of the variables.
+Initially I thought to also separate the variables using "time" and "frequency". What prevented me is that values with very different measuring units (frequency or time) would end up grouped in the same variable. 
 
 #### NA values
 
-The variables frequency\_GravityLinearAcceleration\_(any component)\_(any averagedStatisticalValue) and , frequency\_BodyAngularVelocityJerk\_(XYZ)_(any averagedStatisticalValue) do not exist. This means that in the tidy dataset NA values are introduced.
+The variable frequency\_BodyAngularVelocityJerk\_(XYZ)_(any averagedStatisticalValue) does not exist. This means that in the tidy dataset NA values are introduced.
 
 ## Output
 
-The output of *run_analysis.R* is tidy data as a space-separated table in text format called "tidydata.txt". The tidy data consists of 10 columns and 2880 observations. Some NA values were introduced.  
+The output of *run_analysis.R* is tidy data as a space-separated table in text format called "tidydata.txt". The tidy data consists of 13 columns and 1440 observations. Some NA values were introduced.  
 The program will write the tidy data to the current working directory.
 To see the tidy data, please run:
 
@@ -458,7 +461,6 @@ rm(cond1,cond2,cond)
 # I personally don't like the uppercases
 
 activity_labels$V2 <- tolower(activity_labels$V2)
-
 for (i in 1:6L) {
       activity$V1[activity$V1 == activity_labels$V1[i]] <- activity_labels$V2[i]
 }
@@ -492,9 +494,8 @@ namecols <- sub("Mag","_Magnitude",namecols, fixed = TRUE)
 # Make variable names more descriptive
 namecols <- sub("Acc","LinearAcceleration",namecols, fixed = TRUE)
 namecols <- sub("Gyro","AngularVelocity",namecols, fixed = TRUE)
-namecols <- sub("^t","time_",namecols)
-namecols <- sub("^f","frequency_",namecols)
-
+namecols <- sub("^t","time",namecols)
+namecols <- sub("^f","frequency",namecols)
 
 names(data) <- namecols
 rm(namecols, temp)
@@ -522,7 +523,7 @@ rm(dataMelt)
 # Each type of observational unit forms a table
 
 # The key part here is to define 'what is a variable?'
-# As I see it, the variables are only 10:
+# As I see it, the variables are only:
 # Some fixed variables or dimensions of the measured variables
 # Fixed variables describe the experimental design and are known in advance.
 # They somewhat parametrize the results displayed on the measured variables.
@@ -531,21 +532,24 @@ rm(dataMelt)
 # Fixed variables:
 # 1 - activity
 # 2 - subject
-# 3 - observationDomain - time or frequency
-# 4 - component - X,Y,Z vector components or Magnitude
-# 5 - averagedStatisticalValue - mean or std
+# 3 - component - X,Y,Z vector components or Magnitude
+# 4 - averagedStatisticalValue - mean or std
 # Mesured variables:
 # Measured with the Gyroscope:
-# 6 - BodyAngularVelocity
-# 7 - BodyAngularVelocityJerk (time derivative of BodyAngularVelocity)
+# 5 - timeBodyAngularVelocity
+# 6 - frequencyBodyAngularVelocity
+# 7 - timeBodyAngularVelocityJerk (time derivative of BodyAngularVelocity)
+# 8 - frequencyBodyAngularVelocityJerk
 # Measured with the Accelerometer:
-# 8 - BodyLinearAcceleration
-# 9 - BodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
-# 10 - GravityLinearAcceleration
+# 9 - timeBodyLinearAcceleration
+# 10 - frequencyBodyLinearAcceleration
+# 11 - timeBodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
+# 12 - frequencyBodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
+# 13 - timeGravityLinearAcceleration
 
 
-colnames <- c("observationDomain","var","component",
-              "averagedStatisticalValue")
+
+colnames <- c("var","component","averagedStatisticalValue")
 tidydata <- meandata %>%
       tidyr::gather(unit_var_comp_stat, val,-one_of("activity","subject")) %>%
       tidyr::separate(unit_var_comp_stat,colnames,sep = "_") %>%
@@ -553,22 +557,13 @@ tidydata <- meandata %>%
 rm(colnames)
 
 # To get the result ordered nicely
-tidydata$observationDomain <- factor(tidydata$observationDomain,
-                                     levels = c("time", "frequency"))
 tidydata$component <- factor(tidydata$component,
                              levels = c("X","Y","Z","Magnitude"))
 tidydata$averagedStatisticalValue <- factor(tidydata$averagedStatisticalValue,
                                             levels = c("mean","std"))
 # final result:
-tidydata <- plyr::arrange(tidydata,observationDomain,activity,subject,
-                          component,averagedStatisticalValue)
-
-# For consistency in the naming:
-nmcols <- names(tidydata)
-nmcols <- sub("Body","body",nmcols)
-nmcols <- sub("Gravity","gravity",nmcols)
-names(tidydata) <- nmcols
-rm(nmcols)
+tidydata <- plyr::arrange(tidydata,activity,subject,component,
+                          averagedStatisticalValue)
 
 # write it to file
 write.table(tidydata,file = "./tidydata.txt", row.names = FALSE)

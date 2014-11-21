@@ -125,8 +125,8 @@ namecols <- sub("Mag","_Magnitude",namecols, fixed = TRUE)
 # Make variable names more descriptive
 namecols <- sub("Acc","LinearAcceleration",namecols, fixed = TRUE)
 namecols <- sub("Gyro","AngularVelocity",namecols, fixed = TRUE)
-namecols <- sub("^t","time_",namecols)
-namecols <- sub("^f","frequency_",namecols)
+namecols <- sub("^t","time",namecols)
+namecols <- sub("^f","frequency",namecols)
 
 names(data) <- namecols
 rm(namecols, temp)
@@ -154,7 +154,7 @@ rm(dataMelt)
 # Each type of observational unit forms a table
 
 # The key part here is to define 'what is a variable?'
-# As I see it, the variables are only 10:
+# As I see it, the variables are only:
 # Some fixed variables or dimensions of the measured variables
 # Fixed variables describe the experimental design and are known in advance.
 # They somewhat parametrize the results displayed on the measured variables.
@@ -163,21 +163,24 @@ rm(dataMelt)
 # Fixed variables:
 # 1 - activity
 # 2 - subject
-# 3 - observationDomain - time or frequency
-# 4 - component - X,Y,Z vector components or Magnitude
-# 5 - averagedStatisticalValue - mean or std
+# 3 - component - X,Y,Z vector components or Magnitude
+# 4 - averagedStatisticalValue - mean or std
 # Mesured variables:
 # Measured with the Gyroscope:
-# 6 - BodyAngularVelocity
-# 7 - BodyAngularVelocityJerk (time derivative of BodyAngularVelocity)
+# 5 - timeBodyAngularVelocity
+# 6 - frequencyBodyAngularVelocity
+# 7 - timeBodyAngularVelocityJerk (time derivative of BodyAngularVelocity)
+# 8 - frequencyBodyAngularVelocityJerk
 # Measured with the Accelerometer:
-# 8 - BodyLinearAcceleration
-# 9 - BodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
-# 10 - GravityLinearAcceleration
+# 9 - timeBodyLinearAcceleration
+# 10 - frequencyBodyLinearAcceleration
+# 11 - timeBodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
+# 12 - frequencyBodyLinearAccelerationJerk (time derivative of BodyLinearAcceleration)
+# 13 - timeGravityLinearAcceleration
 
 
-colnames <- c("observationDomain","var","component",
-              "averagedStatisticalValue")
+
+colnames <- c("var","component","averagedStatisticalValue")
 tidydata <- meandata %>%
       tidyr::gather(unit_var_comp_stat, val,-one_of("activity","subject")) %>%
       tidyr::separate(unit_var_comp_stat,colnames,sep = "_") %>%
@@ -185,22 +188,13 @@ tidydata <- meandata %>%
 rm(colnames)
 
 # To get the result ordered nicely
-tidydata$observationDomain <- factor(tidydata$observationDomain,
-                                     levels = c("time", "frequency"))
 tidydata$component <- factor(tidydata$component,
                              levels = c("X","Y","Z","Magnitude"))
 tidydata$averagedStatisticalValue <- factor(tidydata$averagedStatisticalValue,
                                             levels = c("mean","std"))
 # final result:
-tidydata <- plyr::arrange(tidydata,observationDomain,activity,subject,
-                          component,averagedStatisticalValue)
-
-# For consistency in the naming:
-nmcols <- names(tidydata)
-nmcols <- sub("Body","body",nmcols)
-nmcols <- sub("Gravity","gravity",nmcols)
-names(tidydata) <- nmcols
-rm(nmcols)
+tidydata <- plyr::arrange(tidydata,activity,subject,component,
+                          averagedStatisticalValue)
 
 # write it to file
 write.table(tidydata,file = "./tidydata.txt", row.names = FALSE)

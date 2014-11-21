@@ -17,7 +17,7 @@ This document is part of a set of documents:
 
 Variables of **tidydata.txt**.
 
-**activity**
+**activity** -- 1
 
 - Description: physical activity realized by the volunteers. 
 - Type: factor, 6 levels.
@@ -30,7 +30,7 @@ Variables of **tidydata.txt**.
 6. "walking_upstairs"
 
 
-**subject**
+**subject** -- 2
 
 - Description: identification code for each volunteer.
 - Type: factor, 30 levels, ordered numerically from 1 to 30.
@@ -38,18 +38,8 @@ Variables of **tidydata.txt**.
 1. "1"
 2. "2"
 3. "3" ...
-      
 
-**observationDomain**
-
-- Description: indicates if the measured variables are in the time  domain or in the frequency domain. The frequency domain variables were obtained using a Fast-Fourier-Transform on the time domain variables.
-- Type: factor, 2 levels.
-
-1. "time"
-2. "frequency"
-
-
-**component**
+**component** -- 3
 
 - Description: indicates the vectorial axis component or the Magnitude of the measured variables.
 - Type: factor, 4 levels.
@@ -60,7 +50,7 @@ Variables of **tidydata.txt**.
 4. "Magnitude"
 
 
-**averagedStatisticalValue**
+**averagedStatisticalValue** -- 4
 
 - Description: Indicates which statistical value of the measured variables was averaged. "std" stands for "standard deviation".
 - Type: factor, 2 levels.
@@ -68,27 +58,47 @@ Variables of **tidydata.txt**.
 1. "mean"
 2. "std"
 
-**bodyAngularAcceleration**
+**frequencyBodyAngularVelocity** -- 5
+
+- Description: Fast-Fourier-Transform (FFT) of an observed variable, measured by the Gyroscope.
+- Type: numeric (double).
+
+**frequencyBodyAngularVelocityJerk** -- 6
+
+- Description: FFT of an observed variable, measured by the Gyroscope.
+- Type: numeric (double).
+
+**frequencyBodyLinearAcceleration** -- 7
+
+- Description: FFT of an observed variable, measured by the Accelerometer.
+- Type: numeric (double).
+
+**frequencyBodyLinearAccelerationJerk** -- 8
+
+- Description: FFT of an observed variable, measured by the Accelerometer.
+- Type: numeric (double).
+
+**timeBodyAngularVelocity** -- 9
 
 - Description: observed variable, measured by the Gyroscope.
 - Type: numeric (double).
 
-**bodyAngularAccelerationJerk**
+**timeBodyAngularVelocityJerk** -- 10
 
-- Description: observed variable, measured by the Gyroscope.
+- Description: time derivative of an observed variable, measured by the Gyroscope.
 - Type: numeric (double).
 
-**bodyLinearAcceleration**
+**timeBodyLinearAcceleration** -- 11
 
 - Description: observed variable, measured by the Accelerometer.
 - Type: numeric (double).
 
-**bodyLinearAccelerationJerk**
+**timeBodyLinearAccelerationJerk** -- 12
 
-- Description: observed variable, measured by the Accelerometer.
+- Description: time derivative of an observed variable, measured by the Accelerometer.
 - Type: numeric (double).
 
-**gravityLinearAcceleration**
+**timeGravityLinearAcceleration** -- 13
 
 - Description: observed variable, measured by the Accelerometer.
 - Type: numeric (double).
