@@ -286,7 +286,7 @@ Characteristics of a tidy dataset:
 - Each observation forms a row.
 - Each type of observational unit forms a table.
 
-(The original data violated the 3rd characteristic: we needed to use several files to construct a complete dataset/observational unit.)
+(The original data clearly violated the 3rd characteristic: we needed to use several files to construct a complete dataset/observational unit.)
 
 In the case of *meandata* the key part is to answer: **'what is a variable?'**.
 As I see it, the variables are only 10:
@@ -338,6 +338,11 @@ tidydata <- meandata %>%
       tidyr::separate(unit_var_comp_stat,colnames,sep = "_") %>%
       tidyr::spread(var,val)
 ```
+#### Disgression about tidy data
+
+As it is mentioned in the thread of this subject ['Tidy data and the assignment'](https://class.coursera.org/getdata-009/forum/thread?thread_id=192), the form of the tidy data will depend greatly on the use we want of the data.  
+My approach was from the angle of physics (my subject area) and mostly with the idea of easier subsetting, as I don't know the application of the data. As a physisist, I personally would like to separate time domain observations from frequency domain ones (they are related, but have very different applications), as well as vectorial components (x-, y-, z- directions) from the magnitude of the vector (a scalar). And of course the mean and standard deviation are totally different quantities.
+I could have continued the separation: accelerometer vs. gyroscope, non-jerk vs. jerk signals. As only 5 columns/variables remain, my thought was that if I wanted to subset those columns only, I would just type the names of the variables.
 
 #### NA values
 
